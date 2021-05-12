@@ -12,7 +12,10 @@ import AlamofireImage
 class RestaurantDetailViewController: UIViewController {
 
    @IBOutlet weak var restaurantImage: UIImageView!
-   
+   @IBOutlet weak var nameLabel: UILabel!
+   @IBOutlet weak var starsImage: UIImageView!
+   @IBOutlet weak var reviewsLabel: UILabel!
+
    var r: Restaurant!
 
     override func viewDidLoad() {
@@ -20,6 +23,10 @@ class RestaurantDetailViewController: UIViewController {
 
       restaurantImage.af.setImage(withURL: r.imagURL!)
       restaurantImage.layer.cornerRadius = 10
+      starsImage.image = Stars.dict[r.rating]! 
+
+      nameLabel.text = r.name
+      reviewsLabel.text = String(r.reviews) + " reviews"
         // Do any additional setup after loading the view.
     }
     
