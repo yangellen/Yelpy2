@@ -17,6 +17,7 @@
 		BBEBF110247738A50044AFE0 /* RestaurantsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBF10F247738A50044AFE0 /* RestaurantsViewController.swift */; };
 		BBEBF115247738A50044AFE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBEBF114247738A50044AFE0 /* Assets.xcassets */; };
 		BBEBF118247738A50044AFE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBEBF116247738A50044AFE0 /* LaunchScreen.storyboard */; };
+		C53E6749264B078B00DF97FD /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53E6748264B078B00DF97FD /* Restaurant.swift */; };
 		DEB0D3CBF2C6E48DC3500274 /* Pods_Yelpy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F45387EF0BCD4FD0EAD369F /* Pods_Yelpy.framework */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		BBEBF114247738A50044AFE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBEBF117247738A50044AFE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BBEBF119247738A50044AFE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C53E6748264B078B00DF97FD /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 		BB1AE7192488D9CE00DFC1F4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C53E6748264B078B00DF97FD /* Restaurant.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 				BBC34B1A248075140001BE0B /* RestaurantCell.swift in Sources */,
 				BBEBF110247738A50044AFE0 /* RestaurantsViewController.swift in Sources */,
 				BB47B3AA247739640029FFF6 /* API.swift in Sources */,
+				C53E6749264B078B00DF97FD /* Restaurant.swift in Sources */,
 				BBE518382484812500D0F8B6 /* YelpStars.swift in Sources */,
 				BBEBF10C247738A50044AFE0 /* AppDelegate.swift in Sources */,
 				BBEBF10E247738A50044AFE0 /* SceneDelegate.swift in Sources */,
