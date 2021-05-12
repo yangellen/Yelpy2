@@ -9,15 +9,17 @@
 import UIKit
 import AlamofireImage
 
-class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
+
+
 
     @IBOutlet weak var tableView: UITableView!
-    
-    // ––––– TODO: Build Restaurant Class
-    
-    // –––––– TODO: Update restaurants Array to an array of Restaurants
+
     var restaurantsArray: [Restaurant] = []
-    
+
+    //search bar
+    var filteredData: [Restaurant]!
+    var searchController: UISearchController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +27,28 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         getAPIData()
+        filteredData = restaurantsArray
+
+        // Initializing with searchResultsController set to nil means that
+        // searchController will use this view controller to display the search results
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+
+        // If we are using this same view controller to present the results
+        // dimming it out wouldn't make sense. Should probably only set
+        // this to yes if using another controller to display the search results.
+        searchController.dimsBackgroundDuringPresentation = false
+
+        searchController.searchBar.sizeToFit()
+        tableView.tableHeaderView = searchController.searchBar
+
+        // Sets this view controller as presenting view controller for the search interface
+        definesPresentationContext = true
+
     }
     
     
-    // ––––– TODO: Update API to get an array of restaurant objects
+    //Update API to get an array of restaurant objects
     func getAPIData() {
         API.getRestaurants() { (restaurants) in
             guard let restaurants = restaurants else {
@@ -57,7 +77,18 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
         
         return cell
     }
-    
+
+   func updateSearchResults(for searchController: UISearchController) {
+
+   /*   if let searchText = searchController.searchBar.text {
+          filteredData = searchText.isEmpty ? restaurantsArray : restaurantsArray.filter({(restaurant: Restaurant) -> Bool in
+            return restaurant(searchText) != nil
+          })
+
+          tableView.reloadData()
+      }*/
+
+   }
     // Override segue to pass the restaurant object to the DetailsViewController
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       let cell = sender as! UITableViewCell
