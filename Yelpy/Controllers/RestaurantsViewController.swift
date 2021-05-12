@@ -58,7 +58,15 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
     
-    // –––––– TODO: Override segue to pass the restaurant object to the DetailsViewController
+    // Override segue to pass the restaurant object to the DetailsViewController
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      let cell = sender as! UITableViewCell
+      if let indexPath = tableView.indexPath(for: cell) {
+         let r = restaurantsArray[indexPath.row]
+         let detailViewController = segue.destination as! RestaurantDetailViewController
+         detailViewController.r = r
+      }
+   }
 
     
 
