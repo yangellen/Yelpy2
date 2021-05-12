@@ -11,7 +11,7 @@ import Foundation
 
 struct API {
     
-    static func getRestaurants(completion: @escaping ([[String:Any]]?) -> Void) {
+    static func getRestaurants(completion: @escaping ([Restaurant]?) -> Void) {
         
         let apikey = "NSLZgskozvlZCcmyIOZwwGsGCzSiAnmu8FgtGyvJZnFgwHbdb9UcGkcFeNGPslCgHmVEIgizSZ3aMmh0661WMQHp6HbEdqBG31oR4Hs_F3lNnqET8g3Lo-1QvJ6NYHYx"
         
@@ -34,18 +34,22 @@ struct API {
                 print(error.localizedDescription)
             } else if let data = data {
                 
-        
+               let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
 
-                // ––––– TODO: Get data from API and return it using completion
+               // Get array of restaurant dictionaries
+               let restDictionaries = dataDictionary["businesses"] as! [[String: Any]]
+
+               // Variable to store array of Restaurants
+               var restaurants: [Restaurant] = []
+
+               // Use each restaurant dictionary to initialize Restaurant object
+               for dictionary in restDictionaries {
+                  let restaurant = Restaurant.init(dict: dictionary)
+                  restaurants.append(restaurant) // add to restaurants array
+               }
+
+               return completion(restaurants)
                 
-                // 1. Convert json response to a dictionary
-                let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-                // 2. Grab the businesses data and convert it to an array of dictionaries
-                //    for each restaurant
-                let restaurants = dataDictionary["businesses"] as! [[String: Any]]
-                // 3. completion is an escaping method  which allows the data to be used
-                //    outside of the closure
-                return completion(restaurants)
                 
                 }
             }
