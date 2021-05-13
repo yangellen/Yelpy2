@@ -9,9 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
-
-
+class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -21,6 +19,9 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     //search bar
     var filteredData: [Restaurant]!
     var searchController: UISearchController!
+
+    //infinite scrolling
+    var isMoreDataLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,8 +47,7 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
         definesPresentationContext = true
 
     }
-    
-    
+
     //Update API to get an array of restaurant objects
     func getAPIData() {
         API.getRestaurants() { (restaurants) in
@@ -65,7 +65,6 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
 
         return filteredRestaurants.count
     }
-    
 
     // Configure cell using MVC
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -73,7 +72,6 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantCell") as! RestaurantCell
 
         let restaurant : Restaurant
-
 
         restaurant = filteredRestaurants[indexPath.row]
 
@@ -97,25 +95,47 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
             return
             restaurant.name.lowercased().contains(searchText.lowercased())
          }
-
       }
 
       tableView.reloadData()
    }
 
-
     // Override segue to pass the restaurant object to the DetailsViewController
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       let cell = sender as! UITableViewCell
       if let indexPath = tableView.indexPath(for: cell) {
-         let r = restaurantsArray[indexPath.row]
+         let r = filteredRestaurants[indexPath.row]
          let detailViewController = segue.destination as! RestaurantDetailViewController
          detailViewController.r = r
       }
    }
 
-    
+   /*
+   //infinite scrolling
+   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+      if (!isMoreDataLoading){
+         //calcuate the position of one screen length before the bottom of the results
+         let scrollViewContentHwight = tableView.contentSize.height
+         let scrollOffsetThreshold = scrollViewContentHwight - tableView.bounds.size.height
 
+         //when the user has scrolled past the threshold, start requesting
+         if (scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging){
+            isMoreDataLoading = true
+            
+         }
+
+         //load more data when users reaches near end
+         loadMoreData()
+      }
+   }
+
+   func loadMoreData() {
+
+       getAPIData()
+
+       // Update flag
+       self.isMoreDataLoading = false
+   }*/
 }
 
 
