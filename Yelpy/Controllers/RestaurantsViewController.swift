@@ -16,6 +16,7 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var tableView: UITableView!
 
     var restaurantsArray: [Restaurant] = []
+    var filteredRestaurants: [Restaurant] = []
 
     //search bar
     var filteredData: [Restaurant]!
@@ -27,20 +28,19 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         getAPIData()
-        filteredData = restaurantsArray
 
         // Initializing with searchResultsController set to nil means that
         // searchController will use this view controller to display the search results
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
+        let search = UISearchController(searchResultsController: nil)
+        search.searchResultsUpdater = self
 
         // If we are using this same view controller to present the results
         // dimming it out wouldn't make sense. Should probably only set
         // this to yes if using another controller to display the search results.
-        searchController.dimsBackgroundDuringPresentation = false
-
-        searchController.searchBar.sizeToFit()
-        tableView.tableHeaderView = searchController.searchBar
+        search.obscuresBackgroundDuringPresentation = false
+        search.searchBar.placeholder = "Type something here to search"
+        search.searchBar.sizeToFit()
+        navigationItem.searchController = search
 
         // Sets this view controller as presenting view controller for the search interface
         definesPresentationContext = true
@@ -55,14 +55,15 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
                 return
             }
             self.restaurantsArray = restaurants
+            self.filteredRestaurants = restaurants
             self.tableView.reloadData()
         }
     }
-    
-    // Protocol Stubs
+
     // How many cells there will be
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return restaurantsArray.count
+
+        return filteredRestaurants.count
     }
     
 
@@ -70,25 +71,39 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Create Restaurant Cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantCell") as! RestaurantCell
-        
-        let restaurant = restaurantsArray[indexPath.row]
-        
+
+        let restaurant : Restaurant
+
+
+        restaurant = filteredRestaurants[indexPath.row]
+
         cell.r = restaurant
         
         return cell
     }
 
-   func updateSearchResults(for searchController: UISearchController) {
-
-   /*   if let searchText = searchController.searchBar.text {
-          filteredData = searchText.isEmpty ? restaurantsArray : restaurantsArray.filter({(restaurant: Restaurant) -> Bool in
-            return restaurant(searchText) != nil
-          })
-
-          tableView.reloadData()
-      }*/
+    func updateSearchResults(for searchController: UISearchController) {
+      let serchText = searchController.searchBar.text
+      filterStores(for: serchText!)
 
    }
+
+   func filterStores(for searchText:String) {
+      if searchText.isEmpty{
+         filteredRestaurants = restaurantsArray
+      }else{
+         filteredRestaurants = restaurantsArray.filter {
+            restaurant in
+            return
+            restaurant.name.lowercased().contains(searchText.lowercased())
+         }
+
+      }
+
+      tableView.reloadData()
+   }
+
+
     // Override segue to pass the restaurant object to the DetailsViewController
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       let cell = sender as! UITableViewCell
