@@ -13,4 +13,4 @@ An app that allows users to view restaurants from Yelp.
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://recordit.co/QlVyXmt3zr' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://g.recordit.co/QlVyXmt3zr.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
