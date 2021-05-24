@@ -8,6 +8,7 @@
 
 import UIKit
 import AlamofireImage
+import Lottie
 
 class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
 
@@ -22,9 +23,14 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
 
     //infinite scrolling
     var isMoreDataLoading = false
+
+    //animation
+    var animationView: AnimationView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        startAnimations()
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -45,6 +51,11 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
 
         // Sets this view controller as presenting view controller for the search interface
         definesPresentationContext = true
+
+        //delay
+      DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+         self.stopAnimation()
+      }
 
     }
 
@@ -110,6 +121,33 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
       }
    }
 
+   //
+   func startAnimations(){
+      animationView = .init(name: "4762-food-carousel")
+
+      //set size to the frame
+      animationView!.frame = CGRect(x: view.frame.width/3, y:0, width: 100, height:200)
+
+      //fit the animation
+      animationView!.contentMode = .scaleAspectFit
+      view.addSubview(animationView!)
+
+      //set animation in loop mode
+      animationView!.loopMode = .loop
+
+      //animation speed, larger number = fast
+      animationView!.animationSpeed = 5
+
+      //play animation
+      animationView!.play()
+   }
+
+   //
+   @objc func stopAnimation(){
+      animationView?.stop()
+      //change the subview to last and remove current subview
+      view.subviews.last?.removeFromSuperview()
+   }
    /*
    //infinite scrolling
    func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -128,6 +166,8 @@ class RestaurantsViewController: UIViewController, UITableViewDelegate, UITableV
          loadMoreData()
       }
    }
+
+    
 
    func loadMoreData() {
 
